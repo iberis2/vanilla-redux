@@ -1,0 +1,19 @@
+import { connect } from "react-redux";
+import { actionCreators } from "./store";
+
+function ToDo({ text, onBtnClick }) {
+  return (
+    <li>
+      {text}
+      <button onClick={onBtnClick}>삭제</button>
+    </li>
+  );
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  console.log(ownProps);
+
+  return { onBtnClick: () => dispatch(actionCreators.deleteToDo(ownProps.id)) };
+}
+
+export default connect(null, mapDispatchToProps)(ToDo);

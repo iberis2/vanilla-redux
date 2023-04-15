@@ -8,10 +8,10 @@ const addToDo = (text) => {
 };
 
 const deleteToDo = (id) => {
-  return { type: DELETE, id };
+  return { type: DELETE, id: parseInt(id) };
 };
 
-const reducer = (state = ["hello"], action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD:
       return [...state, { text: action.text, id: Date.now() }];
