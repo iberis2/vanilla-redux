@@ -1,34 +1,54 @@
 import { createStore } from "redux";
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-const add = document.getElementById("add");
-const minus = document.getElementById("minus");
-const number = document.querySelector("span");
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
 
-number.innerText = 0;
-
-// stirng으로  "add" 쓰면 오타났을 때 뭐가 잘 못된지 모르는데, 변수로 쓰면 오타나면 자바스크립트에서 선언되지 않은 변수라고 알려줌
-const ADD = "add";
-const MINUS = "minus";
-
-const countModifier = (count = 0, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
-    case ADD:
-      return ++count;
-    case MINUS:
-      return --count;
+    case ADD_TODO:
+      return [...state, { text: action.text, id: Date.now() }];
+    case DELETE_TODO:
+      return state.filter((todo) => todo.id !== action.id);
     default:
-      return count;
+      return state;
   }
 };
-const countStore = createStore(countModifier);
-console.log(countStore);
+const store = createStore(reducer);
 
-const onChange = () => {
-  number.innerText = countStore.getState();
+const addTodo = (text) => {
+  store.dispatch({ type: ADD_TODO, text });
 };
 
-countStore.subscribe(onChange);
+const deleteToDo = (e) => {
+  const id = parseInt(e.target.parentNode.id);
+  store.dispatch({ type: DELETE_TODO, id });
+};
 
-add.addEventListener("click", () => countStore.dispatch({ type: ADD }));
+const paintToDos = () => {
+  const toDos = store.getState();
+  ul.innerHTML = "";
+  toDos.forEach((toDo) => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.innerText = "DELETE";
+    btn.addEventListener("click", deleteToDo);
+    li.id = toDo.id;
+    li.innerText = toDo.text;
+    ul.appendChild(li);
+    li.appendChild(btn);
+  });
+};
 
-minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }));
+store.subscribe(paintToDos);
+
+const onSubmit = (e) => {
+  e.preventDefault();
+  const toDo = input.value;
+  input.value = "";
+  addTodo(toDo);
+};
+
+form.addEventListener("submit", onSubmit);
