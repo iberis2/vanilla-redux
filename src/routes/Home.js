@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { connect } from "react-redux";
 
-const Home = () => {
+const Home = ({ toDos }) => {
   const [text, setText] = useState("");
-
+  console.log(toDos);
   const onChange = (e) => {
     setText(e.target.value);
   };
@@ -25,4 +26,8 @@ const Home = () => {
   );
 };
 
-export default Home;
+function getCurrentState(state, ownProps) {
+  return { toDos: state };
+}
+
+export default connect(getCurrentState)(Home);
