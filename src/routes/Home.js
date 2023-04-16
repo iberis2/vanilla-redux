@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { actionCreators } from "../store";
+import { add } from "../store";
 import ToDo from "../ToDo";
 
 const Home = ({ toDos, ...rest }) => {
@@ -39,7 +39,7 @@ function mapStateToProps(state, ownProps) {
 // vanilla-redux의 store.dispatch() 역할
 function mapDispatchToProps(dispatch) {
   return {
-    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    addToDo: (text) => dispatch(add(text)),
   };
 }
 
