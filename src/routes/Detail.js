@@ -12,13 +12,12 @@ const Detail = ({ toDos }) => {
   return (
     <div>
       <h1>{toDo?.text}</h1>
-      <h5>created at:{dateFormatted}</h5>
+      {toDo && <h5>created at:{dateFormatted}</h5>}
     </div>
   );
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps);
   return { toDos: state };
 }
 
